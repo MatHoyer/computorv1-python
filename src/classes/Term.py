@@ -22,7 +22,7 @@ class Term:
         return f"{"+ " if self.sign == 1 else "- "}{self.absolute()}"
 
     def opposite(self):
-        return Term(-self.value, self.degree)
+        return Term(-(self.value * self.sign), self.degree)
 
     def absolute(self):
         return Term(abs(self.value), self.degree)
@@ -50,4 +50,4 @@ class Term:
         return Term(self.value / other.value, self.degree - other.degree)
 
     def __eq__(self, other: "Term"):
-        return self.degree == other.degree and self.value == other.value and self.sign
+        return self.degree == other.degree and self.value == other.value and self.sign == other.sign
