@@ -35,13 +35,13 @@ def test_equation_member_simplify():
 
 def test_equation_str():
     equation = Equation()
-    equation.add_to_member("left", Term(value=1, degree=0))
-    equation.add_to_member("left", Term(value=1, degree=2))
-    equation.add_to_member("left", Term(value=1, degree=1))
+    equation.add_to_left_member(Term(value=1, degree=0))
+    equation.add_to_left_member(Term(value=1, degree=2))
+    equation.add_to_left_member(Term(value=1, degree=1))
     assert str(equation) == "X^2 + X + 1 = 0"
 
-    equation.add_to_member("right", Term(value=1, degree=1))
-    equation.add_to_member("right", Term(value=1, degree=2))
-    equation.add_to_member("right", Term(value=1, degree=0))
-    equation.add_to_member("right", Term(value=1, degree=1))
+    equation.add_to_right_member(Term(value=1, degree=1))
+    equation.add_to_right_member(Term(value=1, degree=2))
+    equation.add_to_right_member(Term(value=1, degree=0))
+    equation.add_to_right_member(Term(value=1, degree=1))
     assert str(equation) == "X^2 + X + 1 = X^2 + X + X + 1"

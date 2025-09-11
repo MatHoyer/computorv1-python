@@ -1,4 +1,3 @@
-from typing import Literal
 from .Term import Term
 
 
@@ -61,13 +60,11 @@ class Equation:
         self.right_member = EquationMember()
         self.left_member = EquationMember()
 
-    def add_to_member(self, side: Literal["left", "right"], term: Term):
-        if side == "left":
-            self.left_member.add(term)
-        elif side == "right":
-            self.right_member.add(term)
-        else:
-            raise ValueError(f"Invalid side: {side}")
+    def add_to_left_member(self, term: Term):
+        self.left_member.add(term)
+
+    def add_to_right_member(self, term: Term):
+        self.right_member.add(term)
 
     def __str__(self):
         return f"{self.left_member} = {self.right_member}"

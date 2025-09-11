@@ -18,6 +18,9 @@ class Term:
 
         return f"{printed_value}X{printed_degree}"
 
+    def __repr__(self):
+        return self.__str__()
+
     def get_str_signed(self):
         return f"{"+ " if self.sign == 1 else "- "}{self.absolute()}"
 
