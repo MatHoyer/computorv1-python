@@ -1,30 +1,37 @@
 import re
 from typing import Callable
 
-from classes.Term import Term
-from classes.Equation import Equation
+try:
+    from .classes.Term import Term
+    from .classes.Equation import Equation
+except ImportError:
+    from classes.Term import Term
+    from classes.Equation import Equation
 
-number_pattern = r"[0-9]+(?:[.,][0-9]+)?"
-term_pattern = fr"(?:{number_pattern}\s*\*\s*X(?:\^\d+)?|{number_pattern}\s*X(?:\^\d+)?|X(?:\^\d+)?)(?!\s*\*?\s*X)"
-signed_term_pattern = fr"\s*[+\-]?\s*{term_pattern}"
-side_pattern = fr"{signed_term_pattern}(?:{signed_term_pattern})*"
-equation_regex = fr"^\s*({side_pattern})\s*=\s*({side_pattern})\s*$"
+term_pattern = r"([+-]?)(\d*\.?\d*)(X)?(?:\^(\d+))?"
+
+member_pattern = fr"(?:{term_pattern})*"
+
+equation_pattern = fr"^{member_pattern}={member_pattern}$"
 
 
 def parse_equation(equation: str):
-    equation = equation.replace(" ", "")
-    match = re.match(equation_regex, equation)
+    equation = equation.replace(" ", "").replace("*", "")
+    match = re.match(equation_pattern, equation)
     if not match:
         for i in range(len(equation)):
-            if not re.match(equation_regex, equation[:i+1]):
+            if not re.match(equation_pattern, equation[:i+1]):
                 print(f"Failed at char {i}: '{equation[i]}' (context: '{equation[:i+1]}')")
                 break
-        raise ValueError("Invalid equation: regex did not match. See above for where it failed.")
+        raise ValueError("Invalid equation: regex did not match")
 
-    left_member = match.group(1)
-    right_member = match.group(2)
+    members = equation.split("=")
+    if len(members) != 2:
+        raise ValueError("Invalid equation")
 
-    print(left_member, right_member)
+    left_member = members[0]
+    right_member = members[1]
+
     return make_equation(left_member, right_member)
 
 
@@ -36,22 +43,35 @@ def make_equation(left_member: str, right_member: str):
     return eq
 
 
+SIGN_INDEX = 0
+VALUE_INDEX = 1
+X_INDEX = 2
+DEGREE_INDEX = 3
+
+
 def make_terms(member: str, append_to_equation: Callable[[Term], None]):
-    for raw_term in re.split(r'[+-]', member):
-        append_to_equation(make_term(raw_term))
+    terms = re.findall(term_pattern, member)
 
+    for term in terms:
+        sign = term[SIGN_INDEX]
+        value = term[VALUE_INDEX]
+        is_x = term[X_INDEX] == "X"
+        degree = term[DEGREE_INDEX]
 
-def make_term(term: str):
-    if "X" not in term:
-        return Term(value=float(term), degree=0)
+        if sign == "" and value == "" and is_x is False and degree == "":
+            continue
 
-    term = term.replace("^", "")
-    term = term.replace("*", "")
-    splitted_term = term.split("X")
-    print(term, splitted_term)
-    if splitted_term[0] == "":
-        splitted_term[0] = "1"
-    if splitted_term[1] == "":
-        splitted_term[1] = "1"
+        if value == "":
+            value = 1
+        value = float(value)
 
-    return Term(value=float(splitted_term[0]), degree=float(splitted_term[1]))
+        if degree == "" and is_x:
+            degree = 1
+        elif degree == "":
+            degree = 0
+        degree = float(degree)
+
+        if sign == "-":
+            value = -value
+
+        append_to_equation(Term(value=value, degree=degree))
