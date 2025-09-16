@@ -1,3 +1,4 @@
+from typing import Literal
 from .Term import Term
 
 
@@ -9,6 +10,13 @@ class EquationMember:
         if term.degree not in self.terms:
             self.terms[term.degree] = []
         self.terms[term.degree].append(term)
+
+    def remove(self, term: Term):
+        if term.degree not in self.terms:
+            return
+        self.terms[term.degree].remove(term)
+        if len(self.terms[term.degree]) == 0:
+            del self.terms[term.degree]
 
     def clear(self):
         self.terms = {}
@@ -42,6 +50,11 @@ class EquationMember:
 
         return returned_string
 
+    def divide(self, term: Term):
+        for term_list in self.terms.values():
+            for i, t in enumerate(term_list):
+                term_list[i] = t / term
+
     def simplify(self):
         terms_sorted_degree = self._get_sorted_terms()
         new_terms = {}
@@ -60,11 +73,17 @@ class Equation:
         self.right_member = EquationMember()
         self.left_member = EquationMember()
 
-    def add_to_left_member(self, term: Term):
-        self.left_member.add(term)
+    def swap_term(self, term: Term, to: Literal["left", "right"]):
+        if to == "left":
+            self.left_member.add(term.opposite())
+            self.right_member.remove(term)
+        elif to == "right":
+            self.right_member.add(term.opposite())
+            self.left_member.remove(term)
 
-    def add_to_right_member(self, term: Term):
-        self.right_member.add(term)
+    def divide(self, term: Term):
+        self.left_member.divide(term)
+        self.right_member.divide(term)
 
     def __str__(self):
         return f"{self.left_member} = {self.right_member}"

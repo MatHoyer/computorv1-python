@@ -1,5 +1,6 @@
 import sys
 from parser import parse_equation
+from solver import solve_equation
 
 if __name__ == "__main__":
     args = sys.argv[1:]
@@ -8,5 +9,4 @@ if __name__ == "__main__":
         sys.exit(1)
 
     eq = parse_equation(args[0])
-
-    print(eq)
+    solve_equation(eq)

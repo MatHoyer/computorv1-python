@@ -36,6 +36,9 @@ class Term:
     def absolute(self):
         return Term(abs(self.value), self.degree)
 
+    def get_value(self):
+        return self.value * self.sign
+
     def __add__(self, other: "Term"):
         if self.degree != other.degree:
             raise NotImplementedError("Terms must have the same degree to add")

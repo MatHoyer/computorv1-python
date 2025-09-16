@@ -15,8 +15,16 @@ member_pattern = fr"(?:{term_pattern})*"
 equation_pattern = fr"^{member_pattern}={member_pattern}$"
 
 
+signs = "+-*"
+
+
 def parse_equation(equation: str):
-    equation = equation.replace(" ", "").replace("*", "")
+    equation = equation.replace(" ", "")
+    for i in range(len(equation) - 1):
+        if equation[i] in signs and equation[i + 1] in signs:
+            raise ValueError(f"Invalid equation: consecutive signs '{equation[i]}{equation[i + 1]}' at position {i}")
+    equation = equation.replace("*", "")
+
     match = re.match(equation_pattern, equation)
     if not match:
         for i in range(len(equation)):
@@ -37,8 +45,8 @@ def parse_equation(equation: str):
 
 def make_equation(left_member: str, right_member: str):
     eq = Equation()
-    make_terms(member=left_member, append_to_equation=eq.add_to_left_member)
-    make_terms(member=right_member, append_to_equation=eq.add_to_right_member)
+    make_terms(member=left_member, append_to_equation=eq.left_member.add)
+    make_terms(member=right_member, append_to_equation=eq.right_member.add)
 
     return eq
 
