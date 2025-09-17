@@ -3,7 +3,7 @@ try:
     from .classes.Term import Term
 except ImportError:
     from classes.Equation import Equation
-    from classes.Term import Term
+    from classes.Term import Term, to_superscript
 
 
 def get_equation_degree(equation: Equation):
@@ -21,14 +21,29 @@ def resolve_second_degree_equation(equation: Equation):
     delta = b ** 2 - 4 * a * c
     delta_term = Term(value=delta, degree=0)
 
-    print("Discriminant calculation:", f"{term_b} ** 2 - 4 * {term_a} * {term_c} = {delta_term}")
+    print("Discriminant calculation:", f"{term_b}{to_superscript(2)} - 4 * {term_a} * {term_c} = {delta_term}")
 
     if delta == 0:
         print("Discriminant is 0, there is one solution")
+        print("Solution expression:", f"{term_b.opposite()} / (2 * {term_a})")
+        solution = -b / (2 * a)
+        print("Solution:", solution)
     elif delta < 0:
         print("Discriminant is strictly negative, there are two complex solutions")
+        print("Solutions expressions:", f"({term_b.opposite()} ± i√({delta_term.opposite()})) / (2 * {term_a})")
+        print("Solutions:")
+        print("  with the + sign:",
+              f"({term_b.opposite()} + i√({delta_term.opposite()})) / ({term_a * Term(value=2, degree=0)})")
+        print("  with the - sign:",
+              f"({term_b.opposite()} - i√({delta_term.opposite()})) / ({term_a * Term(value=2, degree=0)})")
     else:
         print("Discriminant is strictly positive, there are two solutions")
+        print("Solutions expressions:", f"({term_b.opposite()} ± √({delta_term})) / (2 * {term_a})")
+        solution_1 = (-b + (delta ** 0.5)) / (2 * a)
+        solution_2 = (-b - (delta ** 0.5)) / (2 * a)
+        print("Solutions:")
+        print("  with the + sign:", Term(value=solution_1, degree=0))
+        print("  with the - sign:", Term(value=solution_2, degree=0))
 
 
 def resolve_first_degree_equation(equation: Equation):

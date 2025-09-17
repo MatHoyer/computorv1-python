@@ -51,31 +51,31 @@ def test_term_str_constant_terms():
 
 def test_term_str_linear_terms():
     """Test string representation of linear terms (degree 1)"""
-    assert str(Term(value=1, degree=1)) == "X"
-    assert str(Term(value=-1, degree=1)) == "-X"
+    assert str(Term(value=1, degree=1)) == "x"
+    assert str(Term(value=-1, degree=1)) == "-x"
     assert str(Term(value=0, degree=1)) == "0"
-    assert str(Term(value=2, degree=1)) == "2X"
-    assert str(Term(value=-3, degree=1)) == "-3X"
-    assert str(Term(value=2.5, degree=1)) == "2.5X"
-    assert str(Term(value=-1.75, degree=1)) == "-1.75X"
+    assert str(Term(value=2, degree=1)) == "2x"
+    assert str(Term(value=-3, degree=1)) == "-3x"
+    assert str(Term(value=2.5, degree=1)) == "2.5x"
+    assert str(Term(value=-1.75, degree=1)) == "-1.75x"
 
 
 def test_term_str_quadratic_terms():
     """Test string representation of quadratic terms (degree 2)"""
-    assert str(Term(value=1, degree=2)) == "X^2"
-    assert str(Term(value=-1, degree=2)) == "-X^2"
+    assert str(Term(value=1, degree=2)) == "x²"
+    assert str(Term(value=-1, degree=2)) == "-x²"
     assert str(Term(value=0, degree=2)) == "0"
-    assert str(Term(value=2, degree=2)) == "2X^2"
-    assert str(Term(value=-3, degree=2)) == "-3X^2"
-    assert str(Term(value=2.5, degree=2)) == "2.5X^2"
+    assert str(Term(value=2, degree=2)) == "2x²"
+    assert str(Term(value=-3, degree=2)) == "-3x²"
+    assert str(Term(value=2.5, degree=2)) == "2.5x²"
 
 
 def test_term_str_higher_degree_terms():
     """Test string representation of higher degree terms"""
-    assert str(Term(value=1, degree=3)) == "X^3"
-    assert str(Term(value=2, degree=1.5)) == "2X^1.5"
-    assert str(Term(value=-1, degree=5)) == "-X^5"
-    assert str(Term(value=3, degree=0.5)) == "3X^0.5"
+    assert str(Term(value=1, degree=3)) == "x³"
+    assert str(Term(value=2, degree=1.5)) == "2x¹⋅⁵"
+    assert str(Term(value=-1, degree=5)) == "-x⁵"
+    assert str(Term(value=3, degree=0.5)) == "3x⁰⋅⁵"
 
 
 def test_term_str_zero_value():
@@ -91,26 +91,26 @@ def test_term_repr():
     """Test __repr__ method"""
     term = Term(value=2, degree=3)
     assert repr(term) == str(term)
-    assert repr(term) == "2X^3"
+    assert repr(term) == "2x³"
 
 
 def test_term_get_str_signed_positive():
     """Test get_str_signed for positive terms"""
-    assert Term(value=1, degree=2).get_str_signed() == "+ X^2"
-    assert Term(value=1, degree=1).get_str_signed() == "+ X"
+    assert Term(value=1, degree=2).get_str_signed() == "+ x²"
+    assert Term(value=1, degree=1).get_str_signed() == "+ x"
     assert Term(value=1, degree=0).get_str_signed() == "+ 1"
-    assert Term(value=2, degree=2).get_str_signed() == "+ 2X^2"
-    assert Term(value=3, degree=1).get_str_signed() == "+ 3X"
+    assert Term(value=2, degree=2).get_str_signed() == "+ 2x²"
+    assert Term(value=3, degree=1).get_str_signed() == "+ 3x"
     assert Term(value=5, degree=0).get_str_signed() == "+ 5"
 
 
 def test_term_get_str_signed_negative():
     """Test get_str_signed for negative terms"""
-    assert Term(value=-1, degree=2).get_str_signed() == "- X^2"
-    assert Term(value=-1, degree=1).get_str_signed() == "- X"
+    assert Term(value=-1, degree=2).get_str_signed() == "- x²"
+    assert Term(value=-1, degree=1).get_str_signed() == "- x"
     assert Term(value=-1, degree=0).get_str_signed() == "- 1"
-    assert Term(value=-2, degree=2).get_str_signed() == "- 2X^2"
-    assert Term(value=-3, degree=1).get_str_signed() == "- 3X"
+    assert Term(value=-2, degree=2).get_str_signed() == "- 2x²"
+    assert Term(value=-3, degree=1).get_str_signed() == "- 3x"
     assert Term(value=-5, degree=0).get_str_signed() == "- 5"
 
 
@@ -123,8 +123,8 @@ def test_term_get_str_signed_zero():
 
 def test_term_get_str_signed_decimal():
     """Test get_str_signed for decimal values"""
-    assert Term(value=2.5, degree=2).get_str_signed() == "+ 2.5X^2"
-    assert Term(value=-1.75, degree=1).get_str_signed() == "- 1.75X"
+    assert Term(value=2.5, degree=2).get_str_signed() == "+ 2.5x²"
+    assert Term(value=-1.75, degree=1).get_str_signed() == "- 1.75x"
     assert Term(value=3.14, degree=0).get_str_signed() == "+ 3.14"
 
 
@@ -300,11 +300,11 @@ def test_term_edge_cases():
 
     # Fractional degrees
     term = Term(value=2, degree=0.5)
-    assert str(term) == "2X^0.5"
+    assert str(term) == "2x⁰⋅⁵"
 
     # Negative degrees
     term = Term(value=1, degree=-1)
-    assert str(term) == "X^-1"
+    assert str(term) == "x⁻¹"
 
     # Complex operations
     term1 = Term(value=0.5, degree=2.5)

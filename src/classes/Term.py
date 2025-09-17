@@ -4,6 +4,11 @@ def format_float(value: float):
     return value
 
 
+def to_superscript(num: int) -> str:
+    sup_map = str.maketrans("0123456789-+.", "⁰¹²³⁴⁵⁶⁷⁸⁹⁻⁺⋅")
+    return str(num).translate(sup_map)
+
+
 class Term:
     def __init__(self, value: float, degree: float = 1):
         self.degree = degree
@@ -14,7 +19,7 @@ class Term:
         if self.degree == 0 or self.value == 0:
             return f"{format_float(self.value * self.sign)}"
 
-        printed_degree = f"^{format_float(self.degree)}" if self.degree != 1 else ""
+        printed_degree = f"{to_superscript(format_float(self.degree))}" if self.degree != 1 else ""
 
         printed_value = ""
         if self.value * self.sign != 1 and self.value * self.sign != -1:
@@ -22,7 +27,7 @@ class Term:
         elif self.value * self.sign == -1:
             printed_value = "-"
 
-        return f"{printed_value}X{printed_degree}"
+        return f"{printed_value}x{printed_degree}"
 
     def __repr__(self):
         return self.__str__()

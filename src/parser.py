@@ -8,7 +8,7 @@ except ImportError:
     from classes.Term import Term
     from classes.Equation import Equation
 
-term_pattern = r"([+-]?)(\d*\.?\d*)(X)?(?:\^(\d+))?"
+term_pattern = r"([+-]?)(\d*\.?\d*)([Xx])?(?:\^(\d+))?"
 
 member_pattern = fr"(?:{term_pattern})*"
 

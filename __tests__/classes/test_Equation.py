@@ -64,24 +64,24 @@ def test_equation_member_str_single_terms():
     # Linear term
     equation_member.clear()
     equation_member.add(Term(value=1, degree=1))
-    assert str(equation_member) == "X"
+    assert str(equation_member) == "x"
 
     equation_member.clear()
     equation_member.add(Term(value=-1, degree=1))
-    assert str(equation_member) == "-X"
+    assert str(equation_member) == "-x"
 
     equation_member.clear()
     equation_member.add(Term(value=2, degree=1))
-    assert str(equation_member) == "2X"
+    assert str(equation_member) == "2x"
 
     # Quadratic term
     equation_member.clear()
     equation_member.add(Term(value=1, degree=2))
-    assert str(equation_member) == "X^2"
+    assert str(equation_member) == "x²"
 
     equation_member.clear()
     equation_member.add(Term(value=3, degree=2))
-    assert str(equation_member) == "3X^2"
+    assert str(equation_member) == "3x²"
 
 
 def test_equation_member_str_multiple_terms():
@@ -92,21 +92,21 @@ def test_equation_member_str_multiple_terms():
     equation_member.add(Term(value=1, degree=0))
     equation_member.add(Term(value=1, degree=2))
     equation_member.add(Term(value=1, degree=1))
-    assert str(equation_member) == "X^2 + X + 1"
+    assert str(equation_member) == "x² + x + 1"
 
     # With negative terms
     equation_member.clear()
     equation_member.add(Term(value=-2, degree=1))
     equation_member.add(Term(value=-1, degree=0))
     equation_member.add(Term(value=-1, degree=2))
-    assert str(equation_member) == "-X^2 - 2X - 1"
+    assert str(equation_member) == "-x² - 2x - 1"
 
     # Mixed signs
     equation_member.clear()
     equation_member.add(Term(value=2, degree=2))
     equation_member.add(Term(value=-3, degree=1))
     equation_member.add(Term(value=4, degree=0))
-    assert str(equation_member) == "2X^2 - 3X + 4"
+    assert str(equation_member) == "2x² - 3x + 4"
 
 
 def test_equation_member_str_zero_coefficients():
@@ -123,7 +123,7 @@ def test_equation_member_str_decimal_values():
     equation_member.add(Term(value=2.5, degree=2))
     equation_member.add(Term(value=-1.75, degree=1))
     equation_member.add(Term(value=3, degree=0))
-    assert str(equation_member) == "2.5X^2 - 1.75X + 3"
+    assert str(equation_member) == "2.5x² - 1.75x + 3"
 
 
 def test_equation_member_simplify():
@@ -136,10 +136,10 @@ def test_equation_member_simplify():
     equation_member.add(Term(value=1, degree=2))
     equation_member.add(Term(value=1, degree=2))
     equation_member.add(Term(value=1, degree=1))
-    assert str(equation_member) == "X^2 + X^2 + X^2 + X + 1"
+    assert str(equation_member) == "x² + x² + x² + x + 1"
 
     equation_member.simplify()
-    assert str(equation_member) == "3X^2 + X + 1"
+    assert str(equation_member) == "3x² + x + 1"
 
     # With negative terms
     equation_member.clear()
@@ -158,7 +158,7 @@ def test_equation_member_simplify():
     equation_member.add(Term(value=-1, degree=0))
     equation_member.add(Term(value=5, degree=0))
     equation_member.simplify()
-    assert str(equation_member) == "2X^2 + 6X + 4"
+    assert str(equation_member) == "2x² + 6x + 4"
 
 
 def test_equation_member_get_sorted_terms():
@@ -188,12 +188,12 @@ def test_equation_add_terms():
 
     # Add to left member
     term1 = Term(value=2, degree=2)
-    equation.add_to_left_member(term1)
+    equation.left_member.add(term1)
     assert 2 in equation.left_member.terms
 
     # Add to right member
     term2 = Term(value=3, degree=1)
-    equation.add_to_right_member(term2)
+    equation.right_member.add(term2)
     assert 1 in equation.right_member.terms
 
 
@@ -206,48 +206,48 @@ def test_equation_str_empty():
 def test_equation_str_left_only():
     """Test string representation with only left side"""
     equation = Equation()
-    equation.add_to_left_member(Term(value=1, degree=0))
-    equation.add_to_left_member(Term(value=1, degree=2))
-    equation.add_to_left_member(Term(value=1, degree=1))
-    assert str(equation) == "X^2 + X + 1 = 0"
+    equation.left_member.add(Term(value=1, degree=0))
+    equation.left_member.add(Term(value=1, degree=2))
+    equation.left_member.add(Term(value=1, degree=1))
+    assert str(equation) == "x² + x + 1 = 0"
 
 
 def test_equation_str_both_sides():
     """Test string representation with both sides"""
     equation = Equation()
-    equation.add_to_left_member(Term(value=1, degree=0))
-    equation.add_to_left_member(Term(value=1, degree=2))
-    equation.add_to_left_member(Term(value=1, degree=1))
+    equation.left_member.add(Term(value=1, degree=0))
+    equation.left_member.add(Term(value=1, degree=2))
+    equation.left_member.add(Term(value=1, degree=1))
 
-    equation.add_to_right_member(Term(value=1, degree=1))
-    equation.add_to_right_member(Term(value=1, degree=2))
-    equation.add_to_right_member(Term(value=1, degree=0))
-    equation.add_to_right_member(Term(value=1, degree=1))
-    assert str(equation) == "X^2 + X + 1 = X^2 + X + X + 1"
+    equation.right_member.add(Term(value=1, degree=1))
+    equation.right_member.add(Term(value=1, degree=2))
+    equation.right_member.add(Term(value=1, degree=0))
+    equation.right_member.add(Term(value=1, degree=1))
+    assert str(equation) == "x² + x + 1 = x² + x + x + 1"
 
 
 def test_equation_str_complex():
     """Test string representation with complex equation"""
     equation = Equation()
 
-    # Left side: 2X^2 - 3X + 1
-    equation.add_to_left_member(Term(value=2, degree=2))
-    equation.add_to_left_member(Term(value=-3, degree=1))
-    equation.add_to_left_member(Term(value=1, degree=0))
+    # Left side: 2x² - 3x + 1
+    equation.left_member.add(Term(value=2, degree=2))
+    equation.left_member.add(Term(value=-3, degree=1))
+    equation.left_member.add(Term(value=1, degree=0))
 
-    # Right side: X^2 + 2X - 4
-    equation.add_to_right_member(Term(value=1, degree=2))
-    equation.add_to_right_member(Term(value=2, degree=1))
-    equation.add_to_right_member(Term(value=-4, degree=0))
+    # Right side: x² + 2x - 4
+    equation.right_member.add(Term(value=1, degree=2))
+    equation.right_member.add(Term(value=2, degree=1))
+    equation.right_member.add(Term(value=-4, degree=0))
 
-    assert str(equation) == "2X^2 - 3X + 1 = X^2 + 2X - 4"
+    assert str(equation) == "2x² - 3x + 1 = x² + 2x - 4"
 
 
 def test_equation_with_decimal_coefficients():
     """Test equation with decimal coefficients"""
     equation = Equation()
-    equation.add_to_left_member(Term(value=2.5, degree=2))
-    equation.add_to_left_member(Term(value=-1.75, degree=1))
-    equation.add_to_right_member(Term(value=3.14, degree=0))
+    equation.left_member.add(Term(value=2.5, degree=2))
+    equation.left_member.add(Term(value=-1.75, degree=1))
+    equation.right_member.add(Term(value=3.14, degree=0))
 
-    assert str(equation) == "2.5X^2 - 1.75X = 3.14"
+    assert str(equation) == "2.5x² - 1.75x = 3.14"
